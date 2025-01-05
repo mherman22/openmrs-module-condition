@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module configVersion="1.2">
+	<id>${project.parent.artifactId}</id>
+	<name>${project.parent.name}</name>
+	<version>${project.parent.version}</version>
+	<package>org.openmrs.module.condition</package>
+	<author>mherman22</author>
+	<description>${project.parent.description}</description>
+
+	<activator>org.openmrs.module.condition.ConditionActivator</activator>
+
+	<require_modules>
+		<require_module version="${webservicesRestVersion}">org.openmrs.module.webservices.rest</require_module>
+	</require_modules>
+
+	<require_version>2.5.10</require_version>
+	<messages>
+		<lang>en</lang>
+		<file>messages.properties</file>
+	</messages>
+	<messages>
+		<lang>fr</lang>
+		<file>messages_fr.properties</file>
+	</messages>
+	<messages>
+		<lang>es</lang>
+		<file>messages_es.properties</file>
+	</messages>
+</module>
