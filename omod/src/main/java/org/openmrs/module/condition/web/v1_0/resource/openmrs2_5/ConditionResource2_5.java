@@ -56,8 +56,9 @@ public class ConditionResource2_5 extends ConditionResource2_2 {
 		
 		if (Boolean.parseBoolean(sortByCount)) {
 			// Get all conditions created by a given creator
-			List<Condition> conditions = conditionService.getAllConditionsByCreator(false);
-
+			List<Condition> conditions = conditionService.getAllConditionsByCreator(Context.getAuthenticatedUser()
+			        .getUserId());
+			
 			final Map<String, Integer> frequencyMap = new HashMap<String, Integer>();
 			for (Condition condition : conditions) {
 				String key = getConditionKey(condition);

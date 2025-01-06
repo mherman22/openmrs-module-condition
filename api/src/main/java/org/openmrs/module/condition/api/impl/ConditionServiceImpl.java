@@ -31,9 +31,9 @@ public class ConditionServiceImpl extends org.openmrs.api.impl.ConditionServiceI
 	public List<Condition> getAllConditions() {
 		return dao.getAllConditions();
 	}
-
+	
 	@Override
-	public List<Condition> getAllConditionsByCreator(boolean includeVoided) {
-		return dao.getAllConditionsByCreator(includeVoided);
+	public List<Condition> getAllConditionsByCreator(Integer id) {
+		return dao.getAllConditionsByCreator(id);
 	}
 }

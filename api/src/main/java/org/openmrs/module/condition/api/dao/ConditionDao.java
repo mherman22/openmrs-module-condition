@@ -19,12 +19,13 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
 @Repository("condition.ConditionDao")
 public class ConditionDao extends HibernateConditionDAO {
-
+	
 	private static final String VOIDED = "voided";
 	
 	@Autowired
@@ -42,21 +43,21 @@ public class ConditionDao extends HibernateConditionDAO {
 		return sessionFactory.getCurrentSession()
 		        .createQuery("from Condition c where c.voided = false order by c.dateCreated desc", Condition.class).list();
 	}
-
-    public List<Condition> getAllConditionsByCreator(boolean includeVoided) {
-		Session session = sessionFactory.getCurrentSession();
-		CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-		CriteriaQuery<Condition> criteriaQuery = criteriaBuilder.createQuery(Condition.class);
-		Root<Condition> root = criteriaQuery.from(Condition.class);
-
-		Expression<Boolean> expression = root.get(VOIDED);
-
-		if (!includeVoided) {
-			criteriaQuery.where(criteriaBuilder.isFalse(expression));
+	
+	public List<Condition> getAllConditionsByCreator(Integer userId) {
+		if (userId == null) {
+			throw new IllegalArgumentException("User ID must not be null");
 		}
-
-		criteriaQuery.orderBy(criteriaBuilder.asc(root.get("name")));
-
-		return session.createQuery(criteriaQuery).getResultList();
-    }
+		
+		CriteriaBuilder cb = sessionFactory.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<Condition> query = cb.createQuery(Condition.class);
+		Root<Condition> root = query.from(Condition.class);
+		
+		//where creator.userId = :userId and voided = false
+		query.where(cb.and(cb.equal(root.get("creator").get("userId"), userId), cb.equal(root.get("voided"), false)))
+		        .orderBy(cb.desc(root.get("dateCreated")));
+		
+		return sessionFactory.getCurrentSession().createQuery(query).getResultList();
+	}
+	
 }

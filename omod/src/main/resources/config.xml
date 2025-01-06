@@ -13,7 +13,7 @@
 		<require_module version="${webservicesRestVersion}">org.openmrs.module.webservices.rest</require_module>
 	</require_modules>
 
-	<require_version>2.5.10</require_version>
+	<require_version>2.5.9</require_version>
 	<messages>
 		<lang>en</lang>
 		<file>messages.properties</file>
