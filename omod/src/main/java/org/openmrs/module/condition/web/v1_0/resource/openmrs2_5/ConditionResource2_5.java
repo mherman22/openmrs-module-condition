@@ -1,5 +1,8 @@
 package org.openmrs.module.condition.web.v1_0.resource.openmrs2_5;
 
+import io.swagger.models.Model;
+import io.swagger.models.ModelImpl;
+import io.swagger.models.properties.IntegerProperty;
 import org.openmrs.Condition;
 import org.openmrs.api.context.Context;
 
@@ -17,8 +20,11 @@ import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.PropertyGetter;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
+import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentation;
+import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.api.PageableResult;
+import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingCrudResource;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 import org.openmrs.module.webservices.rest.web.resource.impl.NeedsPaging;
 import org.openmrs.module.webservices.rest.web.v1_0.resource.openmrs2_2.ConditionResource2_2;
@@ -31,13 +37,36 @@ public class ConditionResource2_5 extends ConditionResource2_2 {
 	
 	private ConditionService conditionService = Context.getService(ConditionService.class);
 	
+	/**
+	 * @see DelegatingCrudResource#getRepresentationDescription(Representation)
+	 */
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation representation) {
 		DelegatingResourceDescription description = super.getRepresentationDescription(representation);
-		if (description != null) {
-			description.addProperty("chiefComplaintCount");
+		
+		if (description == null) {
+			return null;
 		}
+		
+		if (representation instanceof DefaultRepresentation) {
+			description.addProperty("totalCount");
+			description.addLink("full", ".?v=" + RestConstants.REPRESENTATION_FULL);
+		} else if (representation instanceof FullRepresentation) {
+			description.addProperty("totalCount");
+			description.addSelfLink();
+		}
+		
 		return description;
+	}
+	
+	@Override
+	public Model getGETModel(Representation rep) {
+		ModelImpl model = (ModelImpl) super.getGETModel(rep);
+		if (rep instanceof DefaultRepresentation || rep instanceof FullRepresentation) {
+			model.property("totalCount", new IntegerProperty());
+		}
+		
+		return model;
 	}
 	
 	/**
@@ -117,7 +146,7 @@ public class ConditionResource2_5 extends ConditionResource2_2 {
 	 * @param condition the condition for which the count is being calculated
 	 * @return the count of how many times this condition is associated with a patient
 	 */
-	@PropertyGetter("chiefComplaintCount")
+	@PropertyGetter("totalCount")
 	@SuppressWarnings("unused")
 	public Integer getChiefComplaintCount(Condition condition) {
 		List<Condition> allConditions = conditionService.getAllConditions();
