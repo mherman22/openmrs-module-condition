@@ -16,24 +16,24 @@ import org.openmrs.module.condition.api.dao.ConditionDao;
 import java.util.List;
 
 public class ConditionServiceImpl extends org.openmrs.api.impl.ConditionServiceImpl implements ConditionService {
-
-    ConditionDao dao;
-
-    public ConditionServiceImpl() {
-    }
-
-    public void setDao(ConditionDao dao) {
-        this.dao = dao;
-        super.setConditionDAO(this.dao);
-    }
-
-    @Override
-    public List<Condition> getAllConditions() {
-        return dao.getAllConditions();
-    }
-
-    @Override
-    public List<Condition> getAllConditionsByCreator(Integer id) {
-        return dao.getAllConditionsByCreator(id);
-    }
+	
+	ConditionDao dao;
+	
+	public ConditionServiceImpl() {
+	}
+	
+	public void setDao(ConditionDao dao) {
+		this.dao = dao;
+		super.setConditionDAO(this.dao);
+	}
+	
+	@Override
+	public List<Condition> getAllConditions() {
+		return dao.getAllConditions();
+	}
+	
+	@Override
+	public List<Condition> getAllConditionsByCreator(Integer id) {
+		return dao.getAllConditionsByCreator(id);
+	}
 }

@@ -16,6 +16,6 @@ import org.springframework.stereotype.Component;
  */
 @Component("condition.ConditionConfig")
 public class ConditionConfig {
-
-    public final static String MODULE_PRIVILEGE = "Condition Privilege";
+	
+	public final static String MODULE_PRIVILEGE = "Condition Privilege";
 }

@@ -20,23 +20,23 @@ import static org.openmrs.module.condition.ConditionConfig.MODULE_PRIVILEGE;
 
 /**
  * This interface has extended method declarations of ConditionService
- *
+ * 
  * @see org.openmrs.api.ConditionService
  */
 public interface ConditionService extends OpenmrsService {
-
-    @Authorized(MODULE_PRIVILEGE)
-    @Transactional
-    List<Condition> getAllConditions();
-
-    /**
-     * Retrieves all conditions created by a specific user.
-     *
-     * @param userId the ID of the creator (user)
-     * @return a list of conditions created by the specified user
-     */
-    @Authorized(MODULE_PRIVILEGE)
-    @Transactional
-    List<Condition> getAllConditionsByCreator(Integer userId);
-
+	
+	@Authorized(MODULE_PRIVILEGE)
+	@Transactional
+	List<Condition> getAllConditions();
+	
+	/**
+	 * Retrieves all conditions created by a specific user.
+	 * 
+	 * @param userId the ID of the creator (user)
+	 * @return a list of conditions created by the specified user
+	 */
+	@Authorized(MODULE_PRIVILEGE)
+	@Transactional
+	List<Condition> getAllConditionsByCreator(Integer userId);
+	
 }
